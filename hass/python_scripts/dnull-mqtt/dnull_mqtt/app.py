@@ -2,6 +2,9 @@ from mqtt import MQTT
 from config import Config
 from local_binance import Binance
 from awtrix import Awtrix
+from fatsecret import Fatsecret
+
+
 
 class App:
     def __init__(self, name, Config) -> None:
@@ -33,3 +36,19 @@ class AppBudget(App):
         )
         self.mqtt.run
 
+class AppNutrition(App):
+    def __init__(self, Config) -> None:
+        self.name = "nutrition"
+        super().__init__(self.name, Config)
+
+        fs = Fatsecret(self.config.fatsecret_secret_key, self.config.fatsecret_client_id)
+
+        auth_url = fs.get_authorize_url()
+
+        print(f"Browse to the following URL in your browser to authorize access:\n{auth_url}")
+
+        pin = input("Enter the PIN provided by FatSecret: ")
+        session_token = fs.authenticate(pin)
+
+        foods = fs.foods_get_most_eaten()
+        print("Most Eaten Food Results: {}".format(len(foods)))

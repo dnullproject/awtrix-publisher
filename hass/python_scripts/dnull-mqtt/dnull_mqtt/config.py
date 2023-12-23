@@ -1,18 +1,15 @@
-# TODO: read from envs
-import random
+from os import environ
 
 
 class Config:
     def __init__(self) -> None:
-        self.broker = "192.168.0.205"
-        self.port = int(1883)
-        self.prefix = "awtrix/custom"
-        self.username = "mqtt"
-        self.password = "157345"
+        self.binance_key = environ.get("BINANCE_KEY")
+        self.binance_secret = environ.get("BINANCE_SECRET")
+        self.broker = environ.get("BROKER_HOST", "192.168.0.205")
+        self.fatsecret_client_id = environ.get("FATSECRET_KEY")
+        self.fatsecret_secret_key = environ.get("FATSECRET_SECRET")
         self.interval = int(10)
-        self.binance_key = (
-            "MNzi7sLQyTLrcCOknvGkvI8N2FmqBe9vWhCuK9WLS1IZ3CN3mgOwX9BEjT6a1UBG"
-        )
-        self.binance_secret = (
-            "XDSbzjKBjBOwGFwsZyvKwNA2gvy38DjOq6m5rokUXw7mEPqr47EIv5cdFA1argcn"
-        )
+        self.password = environ.get("MQTT_PASSWORD")
+        self.port = int(environ.get("BROKER_PORT", 1883))
+        self.prefix = environ.get("MQTT_PREFIX", "awtrix/custom")
+        self.username = environ.get("MQTT_USER")

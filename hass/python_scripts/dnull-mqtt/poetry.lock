@@ -127,6 +127,17 @@ files = [
 ]
 
 [[package]]
+name = "fatsecret"
+version = "0.4.0"
+description = "Python wrapper for FatSecret REST API"
+optional = false
+python-versions = ">=3.6"
+files = [
+    {file = "fatsecret-0.4.0-py3-none-any.whl", hash = "sha256:ac781979fea4c69f566d90f4613dad6c15e6eb3cb81ab29b8d88e227d59e79d9"},
+    {file = "fatsecret-0.4.0.tar.gz", hash = "sha256:85cc4462a24fa6249087851bdf37d4926d4dc2b2d49f440d02be21f01a17f2cb"},
+]
+
+[[package]]
 name = "idna"
 version = "3.6"
 description = "Internationalized Domain Names in Applications (IDNA)"
@@ -247,4 +258,4 @@ test = ["websockets"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.10"
-content-hash = "8dba7ca222992bf16f8c848618463de3488fc484e8c0d3cc365f7ef3a2252be1"
+content-hash = "2803367b73c92f1d3ff13777bba62c52a2fc8a855a4a938910651bc363e1983e"
