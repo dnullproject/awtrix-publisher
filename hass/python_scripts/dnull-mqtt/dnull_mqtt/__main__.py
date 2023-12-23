@@ -5,9 +5,8 @@ import time
 
 if __name__ == "__main__":
     config = Config()
-    mqtt = MQTT(config)
-    app_binance = AppBinance(config, mqtt)
-    app_budget = AppBudget(config, mqtt)
+    app_binance = AppBinance(config)
+    app_budget = AppBudget(config)
 
     while True:
         app_binance.run()

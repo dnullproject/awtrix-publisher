@@ -4,17 +4,17 @@ from local_binance import Binance
 from awtrix import Awtrix
 
 class App:
-    def __init__(self, name, Config, MQTT) -> None:
+    def __init__(self, name, Config) -> None:
         self.name = name
         self.config = Config
-        self.mqtt = MQTT
-        self.mqtt.topic = self.name
+        self.mqtt = MQTT(self.config, self.name)
         self.awtrix = Awtrix(scroll_speed=50)
 
+
 class AppBinance(App):
-    def __init__(self, Config, MQTT) -> None:
+    def __init__(self, Config) -> None:
         self.name = "binance"
-        super().__init__(self.name, Config, MQTT)
+        super().__init__(self.name, Config)
         self.binance = Binance(self.config)
 
     def run(self):
@@ -23,12 +23,13 @@ class AppBinance(App):
         )
 
 class AppBudget(App):
-    def __init__(self, Config, MQTT) -> None:
+    def __init__(self, Config) -> None:
         self.name = "budget"
-        super().__init__(self.name, Config, MQTT)
+        super().__init__(self.name, Config)
 
     def run(self):
         self.mqtt.publish(
             self.awtrix.message(f"budget: TODO")
         )
+        self.mqtt.run
 
