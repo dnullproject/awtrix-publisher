@@ -2,7 +2,7 @@ from mqtt import MQTT
 from config import Config
 from local_binance import Binance
 from awtrix import Awtrix
-from fatsecret import Fatsecret
+# from fatsecret import Fatsecret
 
 
 
@@ -41,6 +41,7 @@ class AppNutrition(App):
         self.name = "nutrition"
         super().__init__(self.name, Config)
 
+    def example(self):
         fs = Fatsecret(self.config.fatsecret_secret_key, self.config.fatsecret_client_id)
 
         auth_url = fs.get_authorize_url()
