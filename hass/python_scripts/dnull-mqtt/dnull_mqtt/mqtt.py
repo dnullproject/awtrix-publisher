@@ -1,13 +1,12 @@
 from paho.mqtt import client as mqtt_client
 from config import Config
 import json
-import random
 
 
 class MQTT:
-    def __init__(self, Config, topic) -> None:
+    def __init__(self, Config: Config, topic) -> None:
         self.config = Config
-        self.topic = f"{self.config.prefix}/{topic}"
+        self.topic = f"{self.config.mtqq_prefix}/{topic}"
         self.client = self.connect()
         self.run()
 
@@ -19,9 +18,9 @@ class MQTT:
                 print(f"Failed to connect {self.topic}, return code %d\n", rc)
 
         client = mqtt_client.Client(f"python-mqtt-{self.topic}")
-        client.username_pw_set(self.config.username, self.config.password)
+        client.username_pw_set(self.config.mqtt_username, self.config.mqtt_password)
         client.on_connect = on_connect
-        client.connect(self.config.broker, self.config.port)
+        client.connect(self.config.mqtt_broker, self.config.mqtt_port)
         return client
 
     def publish(self, msg):

@@ -2,8 +2,8 @@ from mqtt import MQTT
 from config import Config
 from local_binance import Binance
 from awtrix import Awtrix
-# from fatsecret import Fatsecret
 
+# from fatsecret import Fatsecret
 
 
 class App:
@@ -21,9 +21,8 @@ class AppBinance(App):
         self.binance = Binance(self.config)
 
     def run(self):
-        self.mqtt.publish(
-            self.awtrix.message(f"BTC: {self.binance.get_price()}")
-        )
+        self.mqtt.publish(self.awtrix.message(f"BTC: {self.binance.get_price()}"))
+
 
 class AppBudget(App):
     def __init__(self, Config) -> None:
@@ -31,10 +30,8 @@ class AppBudget(App):
         super().__init__(self.name, Config)
 
     def run(self):
-        self.mqtt.publish(
-            self.awtrix.message(f"budget: TODO")
-        )
-        self.mqtt.run
+        self.mqtt.publish(self.awtrix.message(f"budget: TODO"))
+
 
 class AppNutrition(App):
     def __init__(self, Config) -> None:
@@ -42,11 +39,14 @@ class AppNutrition(App):
         super().__init__(self.name, Config)
 
     def example(self):
-        fs = Fatsecret(self.config.fatsecret_secret_key, self.config.fatsecret_client_id)
-
+        fs = Fatsecret(
+            self.config.fatsecret_secret_key, self.config.fatsecret_client_id
+        )
         auth_url = fs.get_authorize_url()
 
-        print(f"Browse to the following URL in your browser to authorize access:\n{auth_url}")
+        print(
+            f"Browse to the following URL in your browser to authorize access:\n{auth_url}"
+        )
 
         pin = input("Enter the PIN provided by FatSecret: ")
         session_token = fs.authenticate(pin)

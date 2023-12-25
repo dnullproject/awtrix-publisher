@@ -11,6 +11,7 @@ python = "^3.10"
 paho-mqtt = "^1.6.1"
 binance-connector = "^3.5.1"
 fatsecret = "^0.4.0"
+notion-client = "^2.1.0"
 
 
 [build-system]

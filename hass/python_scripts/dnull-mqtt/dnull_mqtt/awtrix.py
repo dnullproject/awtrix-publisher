@@ -29,3 +29,7 @@ class Awtrix:
     def message(self, message):
         self.settings["text"] = message
         return self.settings
+
+    def warning(self, message):
+        self.settings["text"] = message
+        return self.settings
