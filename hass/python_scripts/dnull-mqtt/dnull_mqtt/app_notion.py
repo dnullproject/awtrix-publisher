@@ -80,19 +80,21 @@ class AppNotion(App):
 
     def run(self):
         tasks = self.get_todays_todo()
-        if not len(tasks) == 0:
-            message = "No tasks for today"
+        all_tasks_no = len(tasks)
+        if all_tasks_no == 0:
+            message = "No tasks"
         else:
-            all_tasks_no = len(tasks)
             todo_statuses = ["Backlog", "Soon", "In progress"]
             todo = list()
             for task in tasks:
                 if task['status'] in todo_statuses:
                     todo.append(task['name'])
             todo_tasks_no = len(todo)
-            
-            task_names = ", ".join(todo)
-            message = f"{todo_tasks_no}/{all_tasks_no} {task_names}"
-            print(message)
+            if todo_tasks_no == 0:
+                message = "No tasks"
+            else:
+                task_names = ", ".join(todo)
+                message = f"{todo_tasks_no}/{all_tasks_no} {task_names}"
+                print(message)
 
         self.mqtt.publish(self.awtrix.message(message))
