@@ -80,7 +80,7 @@ class AppNotion(App):
 
     def run(self):
         tasks = self.get_todays_todo()
-        if not tasks:
+        if not len(tasks) == 0:
             message = "No tasks for today"
         else:
             all_tasks_no = len(tasks)
