@@ -18,5 +18,5 @@ class Config:
         self.fatsecret_client_id = environ.get("FATSECRET_KEY")
         self.fatsecret_secret_key = environ.get("FATSECRET_SECRET")
         # Notion
-        self.notion_page = environ.get("NOTION_PAGE")
+        self.notion_database_id = environ.get("NOTION_PAGE")
         self.notion_token = environ.get("NOTION_TOKEN")

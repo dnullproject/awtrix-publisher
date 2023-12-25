@@ -5,8 +5,7 @@
 from app import App
 from notion_client import Client
 from config import Config
-from pprint import pprint
-import json
+from datetime import datetime, timedelta
 
 
 class AppNotion(App):
@@ -14,25 +13,86 @@ class AppNotion(App):
         self.name = "notion"
         super().__init__(self.name, Config)
 
+    def get_todays_todo(self):
+        current_datetime_utc2 = datetime.utcnow() + timedelta(hours=2)
+        today = current_datetime_utc2.date()
+        # print(f"TODAY is {today}")
+
         self.notion = Client(auth=self.config.notion_token)
-        # self.page = self.notion.pages.retrieve(self.config.notion_page)
-        my_page = self.notion.databases.query(
+        database = self.notion.databases.query(
             **{
-                "database_id": self.config.notion_page,
+                "database_id": self.config.notion_database_id,
                 "filter": {
-                    "property": "SP",
-                    "number": {
-                        "equals": 10,
+                    # "and": [
+                    # {
+                    "property": "Time",
+                    "date": {
+                        "this_week": {},
                     },
+                    # },
+                    # {
+                    #     "or": [
+                    #         {
+                    #             "property": "Status",
+                    #             "status": {
+                    #                 "equals": "Backlog",
+                    #             },
+                    #         },
+                    #         {
+                    #             "property": "Status",
+                    #             "status": {
+                    #                 "equals": "Soon",
+                    #             },
+                    #         },
+                    #         {
+                    #             "property": "Status",
+                    #             "status": {
+                    #                 "equals": "In progress",
+                    #             },
+                    #         }
+                    #     ]
+                    # },
+                    # ],
                 },
+                "sorts": [{"property": "Time", "direction": "ascending"}],
             }
         )
-        with open("data.json", "w") as f:
-            json.dump(my_page, f)
-        pprint(my_page)
+        # Time:
+        # '.results[0].properties.Time.date.start'
+        # Status:
+        # '.results[0].properties.Status.status.name'
 
-        # list_users_response = self.notion.users.list()
-        # pprint(list_users_response)
+        todays_todo = list()
+        if not database["results"]:
+            print("No TODOs")
+        else:
+            for item in database["results"]:
+                name = item["properties"]["Name"]["title"][0]["plain_text"]
+                status = item["properties"]["Status"]["status"]["name"]
+                time = datetime.fromisoformat(
+                    item["properties"]["Time"]["date"]["start"]
+                ).date()
+
+                if time == today:
+                    todays_todo.append({"name": name, "time": time, "status": status})
+
+        return todays_todo
 
     def run(self):
-        self.mqtt.publish(self.awtrix.message(f"TODO:"))
+        tasks = self.get_todays_todo()
+        if not tasks:
+            message = "No tasks for today"
+        else:
+            all_tasks_no = len(tasks)
+            todo_statuses = ["Backlog", "Soon", "In progress"]
+            todo = list()
+            for task in tasks:
+                if task['status'] in todo_statuses:
+                    todo.append(task['name'])
+            todo_tasks_no = len(todo)
+            
+            task_names = ", ".join(todo)
+            message = f"{todo_tasks_no}/{all_tasks_no} {task_names}"
+            print(message)
+
+        self.mqtt.publish(self.awtrix.message(message))
