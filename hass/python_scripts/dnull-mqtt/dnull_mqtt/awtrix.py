@@ -1,4 +1,8 @@
 # TODO: color methods
+
+from colors import HexColors
+
+
 class Awtrix:
     """
     Docs: https://blueforcer.github.io/awtrix-light/#/api
@@ -107,11 +111,38 @@ class Awtrix:
             "topText": top_text,
             "wakeup": wakeup,
         }
+        self.color = HexColors()
 
-    def message(self, message):
+    # def message(self, message):
+    #     self.settings["text"] = message
+    #     return self.settings
+
+    def warning(self, message):
+        self.settings["color"] = self.color.to_hex["Amber"]
         self.settings["text"] = message
         return self.settings
 
-    def warning(self, message):
+    def critical(self, message):
+        self.settings["color"] = self.color.to_hex["Red"]
         self.settings["text"] = message
+        return self.settings
+
+    def message(self, raw_message):
+        result = list()
+        if "--" not in raw_message:
+            self.settings["text"] = raw_message
+        else:
+            messages = raw_message.split("--")
+            for message in messages:
+                color = None
+                if len(message) == 0:
+                    continue
+                if "::" in message:
+                    color, text = message.split("::")
+                    color = self.color.to_hex.get(color, "FFFFFF")
+                else:
+                    text = message
+                result.append({"t": text, "c": color})
+
+            self.settings["text"] = result
         return self.settings

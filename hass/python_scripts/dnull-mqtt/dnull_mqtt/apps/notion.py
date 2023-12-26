@@ -12,6 +12,7 @@ class AppNotion(App):
     def __init__(self, Config: Config) -> None:
         self.name = "notion"
         super().__init__(self.name, Config)
+        self.awtrix.settings['duration'] = 0
 
     def get_todays_todo(self):
         current_datetime_utc2 = datetime.utcnow() + timedelta(hours=2)
@@ -91,10 +92,10 @@ class AppNotion(App):
                     todo.append(task['name'])
             todo_tasks_no = len(todo)
             if todo_tasks_no == 0:
-                message = "No tasks"
+                message = f"{all_tasks_no} completed"
             else:
                 task_names = ", ".join(todo)
-                message = f"{todo_tasks_no}/{all_tasks_no} {task_names}"
+                message = f"--Green::{todo_tasks_no}/{all_tasks_no}-- {task_names}"
                 print(message)
 
         self.mqtt.publish(self.awtrix.message(message))
