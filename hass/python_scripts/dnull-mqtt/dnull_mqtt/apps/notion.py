@@ -2,7 +2,7 @@
 # Examples of usage: https://github.com/kris-hansen/notion-cli/blob/main/notioncli/cli.py#L26
 # Database filters: https://developers.notion.com/reference/post-database-query-filter
 
-from app import App
+from apps.app import App
 from notion_client import Client
 from config import Config
 from datetime import datetime, timedelta

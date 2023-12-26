@@ -1,7 +1,9 @@
-from mqtt import MQTT
 from config import Config
-from app import AppBinance, AppBudget, AppNutrition
-from app_notion import AppNotion
+from apps.binance import AppBinance
+from apps.budget import AppBudget
+
+# from apps.nutrition import AppNutrition
+from apps.notion import AppNotion
 import time
 
 if __name__ == "__main__":
