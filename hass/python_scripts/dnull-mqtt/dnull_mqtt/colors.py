@@ -1,5 +1,6 @@
 # https://stackoverflow.com/questions/59546962/converting-hex-value-to-name-of-the-colour-in-python
 
+
 class HexColors:
     def __init__(self):
         self.from_hex = {

@@ -12,8 +12,8 @@ class AppNotion(App):
     def __init__(self, Config: Config) -> None:
         self.name = "notion"
         super().__init__(self.name, Config)
-        self.awtrix.settings['duration'] = 0
-        self.awtrix.settings['icon'] = self.config.notion_icon
+        self.awtrix.settings["duration"] = 0
+        self.awtrix.settings["icon"] = self.config.notion_icon
 
     def _get_todays_todo(self):
         current_datetime_utc2 = datetime.utcnow() + timedelta(hours=2)
@@ -84,19 +84,19 @@ class AppNotion(App):
         # TODO: use formula instead of hardcode
         symbols = len(text)
         if symbols <= 15:
-            self.awtrix.settings['scroll_speed'] = 50
+            self.awtrix.settings["scroll_speed"] = 50
         elif symbols > 15 and symbols <= 25:
-            self.awtrix.settings['scroll_speed'] = 75
+            self.awtrix.settings["scroll_speed"] = 75
         else:
-            self.awtrix.settings['scroll_speed'] = 100
+            self.awtrix.settings["scroll_speed"] = 100
 
-    def _set_icon(self, todo_tasks_no ,all_tasks_no):
+    def _set_icon(self, todo_tasks_no, all_tasks_no):
         if todo_tasks_no == 0 or all_tasks_no == 0:
-            self.awtrix.settings['icon'] = self.config.notion_all_c
+            self.awtrix.settings["icon"] = self.config.notion_all_c
         else:
             icon_no = str(todo_tasks_no) + str(all_tasks_no)
             icon_id = self.config.notion_icons.get(icon_no, self.config.notion_icon)
-            self.awtrix.settings['icon'] = icon_id
+            self.awtrix.settings["icon"] = icon_id
 
     def run(self):
         tasks = self._get_todays_todo()
@@ -109,8 +109,8 @@ class AppNotion(App):
             todo_statuses = ["Backlog", "Soon", "In progress"]
             todo = list()
             for task in tasks:
-                if task['status'] in todo_statuses:
-                    todo.append(task['name'])
+                if task["status"] in todo_statuses:
+                    todo.append(task["name"])
             todo_tasks_no = len(todo)
             if todo_tasks_no == 0:
                 message = f"{all_tasks_no} completed"
