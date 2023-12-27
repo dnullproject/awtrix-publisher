@@ -13,6 +13,7 @@ class AppNotion(App):
     def __init__(self, Config: Config) -> None:
         self.name = "notion"
         super().__init__(self.name, Config)
+        self.awtrix.settings["textCase"] = 1
         self.awtrix.settings["duration"] = 0
         self.awtrix.settings["icon"] = self.awtrix.icons.get(self.name)
         self.notion = Client(auth=self.config.notion_token)
@@ -85,11 +86,11 @@ class AppNotion(App):
         # TODO: use formula instead of hardcode
         symbols = len(text)
         if symbols <= 15:
-            self.awtrix.settings["scroll_speed"] = 50
+            self.awtrix.settings["scrollSpeed"] = 50
         elif symbols > 15 and symbols <= 25:
-            self.awtrix.settings["scroll_speed"] = 75
+            self.awtrix.settings["scrollSpeed"] = 75
         else:
-            self.awtrix.settings["scroll_speed"] = 100
+            self.awtrix.settings["scrollSpeed"] = 100
 
     def _set_icon(self, todo_tasks_no, all_tasks_no):
         if todo_tasks_no == 0 or all_tasks_no == 0:
@@ -122,7 +123,7 @@ class AppNotion(App):
                     message = f"--Green::{all_tasks_no} completed--"
                 else:
                     task_names = ", ".join(todo)
-                    message = f"--Cyan::{task_names}--"
+                    message = f"--White::{task_names}--"
 
             self._set_icon(todo_tasks_no, all_tasks_no)
             self._set_scroll_speed(task_names)
