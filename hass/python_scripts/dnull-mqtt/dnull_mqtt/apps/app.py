@@ -1,7 +1,7 @@
 from mqtt import MQTT
 from config import Config
 from awtrix import Awtrix
-
+from base_log import log
 
 
 class App:
@@ -11,3 +11,4 @@ class App:
         self.mqtt = MQTT(self.config, self.name)
         self.awtrix = Awtrix(scrollSpeed=50)
         self.awtrix.icon("default")
+        log.info(f"{self.name} inited")

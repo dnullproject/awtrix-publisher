@@ -8,6 +8,8 @@ from config import Config
 from datetime import datetime, timedelta
 import httpx
 
+from base_log import log
+
 
 class AppNotion(App):
     def __init__(self, Config: Config) -> None:
@@ -21,7 +23,6 @@ class AppNotion(App):
     def _get_todays_todo(self):
         current_datetime_utc2 = datetime.utcnow() + timedelta(hours=2)
         today = current_datetime_utc2.date()
-        # print(f"TODAY is {today}")
 
         database = self.notion.databases.query(
             **{
@@ -68,7 +69,7 @@ class AppNotion(App):
 
         todays_todo = list()
         if not database["results"]:
-            print("No TODOs")
+            log.info("No TODOs")
         else:
             for item in database["results"]:
                 name = item["properties"]["Name"]["title"][0]["plain_text"]
@@ -103,7 +104,7 @@ class AppNotion(App):
         try:
             tasks = self._get_todays_todo()
         except httpx.HTTPStatusError as e:
-            print(f"Issue with Notion API: {e}")
+            log.error(f"Issue with Notion API: {e}")
             self.awtrix.icon("error")
             self.mqtt.publish(self.awtrix.message("--Red::connection error--"))
         else:

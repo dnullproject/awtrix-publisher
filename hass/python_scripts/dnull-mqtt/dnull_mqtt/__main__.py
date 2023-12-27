@@ -5,9 +5,14 @@ from apps.budget import AppBudget
 # from apps.nutrition import AppNutrition
 from apps.notion import AppNotion
 import time
+from base_log import log
+
 
 if __name__ == "__main__":
     config = Config()
+
+    log.info("DNULL MQTT started...")
+    log.debug("debug enabled")
     pairs = ["BTCUSDT", "ETHUSDT"]
     app_binance = AppBinance(config)
     # app_budget = AppBudget(config)

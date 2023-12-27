@@ -3,6 +3,7 @@ from os import environ
 
 class Config:
     def __init__(self) -> None:
+        self.log_level = environ.get("LOG_LEVER", "INFO")
         # Binance
         self.binance_key = environ.get("BINANCE_KEY")
         self.binance_secret = environ.get("BINANCE_SECRET")
