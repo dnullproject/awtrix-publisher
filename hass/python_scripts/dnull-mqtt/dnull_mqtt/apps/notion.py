@@ -6,6 +6,7 @@ from apps.app import App
 from notion_client import Client
 from config import Config
 from datetime import datetime, timedelta
+import httpx
 
 
 class AppNotion(App):
@@ -13,14 +14,14 @@ class AppNotion(App):
         self.name = "notion"
         super().__init__(self.name, Config)
         self.awtrix.settings["duration"] = 0
-        self.awtrix.settings["icon"] = self.config.notion_icon
+        self.awtrix.settings["icon"] = self.awtrix.icons.get(self.name)
+        self.notion = Client(auth=self.config.notion_token)
 
     def _get_todays_todo(self):
         current_datetime_utc2 = datetime.utcnow() + timedelta(hours=2)
         today = current_datetime_utc2.date()
         # print(f"TODAY is {today}")
 
-        self.notion = Client(auth=self.config.notion_token)
         database = self.notion.databases.query(
             **{
                 "database_id": self.config.notion_database_id,
@@ -92,32 +93,37 @@ class AppNotion(App):
 
     def _set_icon(self, todo_tasks_no, all_tasks_no):
         if todo_tasks_no == 0 or all_tasks_no == 0:
-            self.awtrix.settings["icon"] = self.config.notion_all_c
+            self.awtrix.icon("green_checkmark")
         else:
             icon_no = str(todo_tasks_no) + str(all_tasks_no)
-            icon_id = self.config.notion_icons.get(icon_no, self.config.notion_icon)
-            self.awtrix.settings["icon"] = icon_id
+            self.awtrix.icon(icon_no)
 
     def run(self):
-        tasks = self._get_todays_todo()
-        task_names = str()
-        todo_tasks_no = 0
-        all_tasks_no = len(tasks)
-        if all_tasks_no == 0:
-            message = "No tasks"
+        try:
+            tasks = self._get_todays_todo()
+        except httpx.HTTPStatusError as e:
+            print(f"Issue with Notion API: {e}")
+            self.awtrix.icon("error")
+            self.mqtt.publish(self.awtrix.message("--Red::connection error--"))
         else:
-            todo_statuses = ["Backlog", "Soon", "In progress"]
-            todo = list()
-            for task in tasks:
-                if task["status"] in todo_statuses:
-                    todo.append(task["name"])
-            todo_tasks_no = len(todo)
-            if todo_tasks_no == 0:
-                message = f"{all_tasks_no} completed"
+            task_names = str()
+            todo_tasks_no = 0
+            all_tasks_no = len(tasks)
+            if all_tasks_no == 0:
+                message = "No tasks"
             else:
-                task_names = ", ".join(todo)
-                message = f"--Green::{task_names}--"
+                todo_statuses = ["Backlog", "Soon", "In progress"]
+                todo = list()
+                for task in tasks:
+                    if task["status"] in todo_statuses:
+                        todo.append(task["name"])
+                todo_tasks_no = len(todo)
+                if todo_tasks_no == 0:
+                    message = f"{all_tasks_no} completed"
+                else:
+                    task_names = ", ".join(todo)
+                    message = f"--Green::{task_names}--"
 
-        self._set_icon(todo_tasks_no, all_tasks_no)
-        self._set_scroll_speed(task_names)
-        self.mqtt.publish(self.awtrix.message(message))
+            self._set_icon(todo_tasks_no, all_tasks_no)
+            self._set_scroll_speed(task_names)
+            self.mqtt.publish(self.awtrix.message(message))

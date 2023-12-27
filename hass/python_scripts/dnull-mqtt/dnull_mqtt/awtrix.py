@@ -111,11 +111,42 @@ class Awtrix:
             "topText": top_text,
             "wakeup": wakeup,
         }
+        self.icons = {
+            "default": "28035",
+            "missing": "47687",
+            "binance": "43722",
+            "green_checkmark": "47199",
+            "error": "56224",
+            "notion": "57587",
+            # 1/
+            "11": "57635",
+            "12": "57636",
+            "13": "57637",
+            "14": "57638",
+            "15": "57639",
+            # 2/
+            "22": "57640",
+            "23": "57641",
+            "24": "57642",
+            "25": "57643",
+            # 3/
+            "33": "57644",
+            "34": "57645",
+            "35": "57646",
+            # 4/
+            "44": "57647",
+            "45": "57648",
+            # 5/
+            "55": "57649",
+        }
         self.color = HexColors()
 
     # def message(self, message):
     #     self.settings["text"] = message
     #     return self.settings
+
+    def icon(self, icon_name):
+        self.settings["icon"] = self.icons.get(icon_name, self.icons["missing"])
 
     def warning(self, message):
         self.settings["color"] = self.color.to_hex["Amber"]

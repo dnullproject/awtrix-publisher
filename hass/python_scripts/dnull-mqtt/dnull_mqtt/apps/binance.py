@@ -8,7 +8,7 @@ class AppBinance(App):
         self.name = "binance"
         super().__init__(self.name, Config)
         self.client = Spot()
-        self.awtrix.settings['icon'] = self.config.binance_icon
+        self.awtrix.icon(self.name)
 
     def get_price(self, pair="BTCUSDT"):
         price = int(
