@@ -1,6 +1,6 @@
-from apps.app import App
+from dnull_mqtt.apps.app import App
 from fatsecret import Fatsecret
-from config import Config
+from dnull_mqtt.config import Config
 
 
 class AppNutrition(App):

@@ -1,16 +1,8 @@
 FROM python:3.10
 
-ENV PYTHONUNBUFFERED=1
-ENV PYTHONDONTWRITEBYTECODE=1
-ENV POETRY_VIRTUALENVS_CREATE=false
 
-RUN pip install poetry
+RUN pip install dnullproject-iot
 
 WORKDIR /app/
-COPY poetry.lock pyproject.toml /app/
-
-RUN poetry install --no-root --only main
-
-COPY ./dnull_mqtt /app/dnull_mqtt/
 
 CMD ["python", "dnull_mqtt"]

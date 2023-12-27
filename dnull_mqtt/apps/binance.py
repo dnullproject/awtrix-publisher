@@ -1,7 +1,7 @@
-from apps.app import App
+from dnull_mqtt.apps.app import App
 from binance.spot import Spot
-from config import Config
-from base_log import log
+from dnull_mqtt.config import Config
+from dnull_mqtt.base_log import log
 
 
 class AppBinance(App):

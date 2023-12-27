@@ -1,5 +1,5 @@
-from apps.app import App
-from config import Config
+from dnull_mqtt.apps.app import App
+from dnull_mqtt.config import Config
 
 class AppBudget(App):
     def __init__(self, Config: Config) -> None:

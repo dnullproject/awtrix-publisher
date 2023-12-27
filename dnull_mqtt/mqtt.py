@@ -1,7 +1,7 @@
 from paho.mqtt import client as mqtt_client
-from config import Config
+from dnull_mqtt.config import Config
 import json
-from base_log import log
+from dnull_mqtt.base_log import log
 
 
 class MQTT:

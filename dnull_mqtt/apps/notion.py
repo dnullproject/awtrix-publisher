@@ -2,13 +2,13 @@
 # Examples of usage: https://github.com/kris-hansen/notion-cli/blob/main/notioncli/cli.py#L26
 # Database filters: https://developers.notion.com/reference/post-database-query-filter
 
-from apps.app import App
+from dnull_mqtt.apps.app import App
 from notion_client import Client
-from config import Config
+from dnull_mqtt.config import Config
 from datetime import datetime, timedelta
 import httpx
 
-from base_log import log
+from dnull_mqtt.base_log import log
 
 
 class AppNotion(App):

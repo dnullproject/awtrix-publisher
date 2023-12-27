@@ -1,6 +1,6 @@
-from mqtt import MQTT
-from awtrix import Awtrix
-from base_log import log
+from dnull_mqtt.mqtt import MQTT
+from dnull_mqtt.awtrix import Awtrix
+from dnull_mqtt.base_log import log
 
 
 class App:

@@ -17,3 +17,6 @@ notion-client = "^2.1.0"
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.scripts]
+dnull-mqtt = "dnull_mqtt.main:run"

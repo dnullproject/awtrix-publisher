@@ -1,5 +1,5 @@
 import logging
-from config import Config
+from dnull_mqtt.config import Config
 
 config = Config()
 logging.basicConfig(format="[%(asctime)s %(levelname)s]\t%(message)s")

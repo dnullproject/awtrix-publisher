@@ -1,6 +1,6 @@
 # TODO: color methods
 
-from colors import HexColors
+from dnull_mqtt.colors import HexColors
 
 
 class Awtrix:

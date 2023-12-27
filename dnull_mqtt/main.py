@@ -1,14 +1,15 @@
-from config import Config
-from apps.binance import AppBinance
-from apps.budget import AppBudget
+from dnull_mqtt.config import Config
+from dnull_mqtt.apps.binance import AppBinance
+from dnull_mqtt.apps.budget import AppBudget
 
 # from apps.nutrition import AppNutrition
-from apps.notion import AppNotion
+from dnull_mqtt.apps.notion import AppNotion
 import time
-from base_log import log
+from dnull_mqtt.base_log import log
 
 
-if __name__ == "__main__":
+
+def run():
     config = Config()
 
     log.info("DNULL MQTT started...")
@@ -25,3 +26,7 @@ if __name__ == "__main__":
         app_notion.run()
 
         time.sleep(config.mqtt_interval)
+
+if __name__ == "__main__":
+    run()
+
