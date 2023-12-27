@@ -25,11 +25,12 @@ jobs:
           images: 2xnone/awtrix
       
       - name: Build and push Docker image
-        uses: docker/build-push-action@3b5e8027fcad23fda98b2e3ac259d8d67585f671
+        uses: docker/build-push-action@v5
         with:
           context: ./python
           file: ./python/Dockerfile
           push: true
+          platforms: linux/amd64,linux/arm64,linux/arm/v7
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
 
