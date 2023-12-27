@@ -1,5 +1,4 @@
 from mqtt import MQTT
-from config import Config
 from awtrix import Awtrix
 from base_log import log
 
