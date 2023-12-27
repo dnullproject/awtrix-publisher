@@ -6,6 +6,7 @@ class Config:
         # Binance
         self.binance_key = environ.get("BINANCE_KEY")
         self.binance_secret = environ.get("BINANCE_SECRET")
+        self.binance_icon = "43722"
 
         # MQTT
         self.mqtt_broker = environ.get("BROKER_HOST", "192.168.0.205")
@@ -20,3 +21,28 @@ class Config:
         # Notion
         self.notion_database_id = environ.get("NOTION_PAGE")
         self.notion_token = environ.get("NOTION_TOKEN")
+        self.notion_icon = "57587"
+        self.notion_all_completed_icon = "47199"
+        ## Notion icons
+        self.notion_icons = {
+                # 1/
+                "11": "57635",
+                "12": "57636",
+                "13": "57637",
+                "14": "57638",
+                "15": "57639",
+                # 2/
+                "22": "57640",
+                "23": "57641",
+                "24": "57642",
+                "25": "57643",
+                # 3/
+                "33": "57644",
+                "34": "57645",
+                "35": "57646",
+                # 4/
+                "44": "57647",
+                "45": "57648",
+                # 5/
+                "55": "57649",
+                }

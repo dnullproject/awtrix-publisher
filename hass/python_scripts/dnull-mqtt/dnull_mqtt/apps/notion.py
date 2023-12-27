@@ -13,8 +13,9 @@ class AppNotion(App):
         self.name = "notion"
         super().__init__(self.name, Config)
         self.awtrix.settings['duration'] = 0
+        self.awtrix.settings['icon'] = self.config.notion_icon
 
-    def get_todays_todo(self):
+    def _get_todays_todo(self):
         current_datetime_utc2 = datetime.utcnow() + timedelta(hours=2)
         today = current_datetime_utc2.date()
         # print(f"TODAY is {today}")
@@ -79,8 +80,28 @@ class AppNotion(App):
 
         return todays_todo
 
+    def _set_scroll_speed(self, text: str):
+        # TODO: use formula instead of hardcode
+        symbols = len(text)
+        if symbols <= 15:
+            self.awtrix.settings['scroll_speed'] = 50
+        elif symbols > 15 and symbols <= 25:
+            self.awtrix.settings['scroll_speed'] = 75
+        else:
+            self.awtrix.settings['scroll_speed'] = 100
+
+    def _set_icon(self, todo_tasks_no ,all_tasks_no):
+        if todo_tasks_no == 0 or all_tasks_no == 0:
+            self.awtrix.settings['icon'] = self.config.notion_all_c
+        else:
+            icon_no = str(todo_tasks_no) + str(all_tasks_no)
+            icon_id = self.config.notion_icons.get(icon_no, self.config.notion_icon)
+            self.awtrix.settings['icon'] = icon_id
+
     def run(self):
-        tasks = self.get_todays_todo()
+        tasks = self._get_todays_todo()
+        task_names = str()
+        todo_tasks_no = 0
         all_tasks_no = len(tasks)
         if all_tasks_no == 0:
             message = "No tasks"
@@ -95,7 +116,8 @@ class AppNotion(App):
                 message = f"{all_tasks_no} completed"
             else:
                 task_names = ", ".join(todo)
-                message = f"--Green::{todo_tasks_no}/{all_tasks_no}-- {task_names}"
-                print(message)
+                message = f"--Green::{task_names}--"
 
+        self._set_icon(todo_tasks_no, all_tasks_no)
+        self._set_scroll_speed(task_names)
         self.mqtt.publish(self.awtrix.message(message))
