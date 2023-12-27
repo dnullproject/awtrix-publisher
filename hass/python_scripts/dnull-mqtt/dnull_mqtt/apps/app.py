@@ -9,5 +9,5 @@ class App:
         self.name = name
         self.config = Config
         self.mqtt = MQTT(self.config, self.name)
-        self.awtrix = Awtrix(scroll_speed=50)
+        self.awtrix = Awtrix(scrollSpeed=50)
         self.awtrix.icon("default")
