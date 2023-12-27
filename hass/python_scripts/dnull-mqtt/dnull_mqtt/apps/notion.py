@@ -110,7 +110,7 @@ class AppNotion(App):
             todo_tasks_no = 0
             all_tasks_no = len(tasks)
             if all_tasks_no == 0:
-                message = "No tasks"
+                message = "--Middle grey::No tasks--"
             else:
                 todo_statuses = ["Backlog", "Soon", "In progress"]
                 todo = list()
@@ -119,10 +119,10 @@ class AppNotion(App):
                         todo.append(task["name"])
                 todo_tasks_no = len(todo)
                 if todo_tasks_no == 0:
-                    message = f"{all_tasks_no} completed"
+                    message = f"--Green::{all_tasks_no} completed--"
                 else:
                     task_names = ", ".join(todo)
-                    message = f"--Green::{task_names}--"
+                    message = f"--Cyan::{task_names}--"
 
             self._set_icon(todo_tasks_no, all_tasks_no)
             self._set_scroll_speed(task_names)

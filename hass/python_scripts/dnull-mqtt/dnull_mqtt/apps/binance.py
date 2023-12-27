@@ -10,14 +10,17 @@ class AppBinance(App):
         self.client = Spot()
         self.awtrix.icon(self.name)
 
-    def get_price(self, pair="BTCUSDT"):
+    def get_price(self, pair: str):
         price = int(
             str(self.client.avg_price(pair)["price"]).split(".")[0]
         )  # TODO: ugly
         return f"{price:_}"
 
-    def run(self):
-        # message = [{"text": "BTC", "color": "Amber"}, {"text": self.get_price()}]
-        message = f"--Amber::BTC-- {self.get_price()}"
-        self.mqtt.publish(self.awtrix.message(message))
+    def run(self, pairs: list):
+        messages = list()
+        for pair in pairs:
+            message = f"--White::{self.get_price(pair)}--"
+            self.awtrix.icon(pair)
+            messages.append(self.awtrix.message(message).copy())
 
+        self.mqtt.publish(messages)

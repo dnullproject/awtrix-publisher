@@ -114,7 +114,9 @@ class Awtrix:
         self.icons = {
             "default": "28035",
             "missing": "47687",
-            "binance": "43722",
+            "binance": "55438",
+            "BTCUSDT": "43722",
+            "ETHUSDT": "10492",
             "green_checkmark": "47199",
             "error": "56224",
             "notion": "57587",
@@ -158,7 +160,7 @@ class Awtrix:
         self.settings["text"] = message
         return self.settings
 
-    def message(self, raw_message):
+    def message(self, raw_message: str):
         result = list()
         if "--" not in raw_message:
             self.settings["text"] = raw_message
@@ -177,3 +179,9 @@ class Awtrix:
 
             self.settings["text"] = result
         return self.settings
+
+    # def messages(self, all_messages: list):
+    #     result = list()
+    #     for chunk_message in all_messages:
+    #         result.append(self.message(chunk_message))
+    #     return result
