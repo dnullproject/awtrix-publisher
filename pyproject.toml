@@ -19,4 +19,4 @@ requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
 
 [tool.poetry.scripts]
-dnull-mqtt = "dnull_mqtt.main:run"
+awtrix-publisher = "dnull_mqtt.main:run"
