@@ -1,5 +1,6 @@
 from dnull_mqtt.apps.app import App
 from binance.spot import Spot
+from binance.error import ClientError
 from dnull_mqtt.config import Config
 from dnull_mqtt.base_log import log
 
@@ -20,12 +21,17 @@ class AppBinance(App):
         data = self.client.klines(pair, self.config.binance_candlestick_inverval)[-1]
         return round(float(data[1]) - float(data[4]), 2)
 
-    def run(self, pairs: list):
+    def run(self):
+        pairs = [x.strip() for x in self.config.binance_pairs.split(',')]
         messages = list()
         for pair in pairs:
-            self.get_diff(pair)
-            price = self.get_price(pair)
-            diff = self.get_diff(pair)
+            try:
+                price = self.get_price(pair)
+                diff = self.get_diff(pair)
+            except ClientError as e:
+                log.error(f"Binance - Error getting price for {pair}, possible typo")
+                log.error(e)
+                continue
             if diff < 0:
                 diff = f"--Red::({diff})--"
             elif diff == 0:
