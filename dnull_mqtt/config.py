@@ -8,6 +8,7 @@ class Config:
         self.binance_key = environ.get("BINANCE_KEY")
         self.binance_secret = environ.get("BINANCE_SECRET")
         self.binance_candlestick_inverval = "1h"
+        self.binance_pairs = environ.get("BINANCE_PAIRS", "BTCUSDT,ETHUSDT")
 
         # MQTT
         self.mqtt_broker = environ.get("BROKER_HOST", "192.168.0.205")

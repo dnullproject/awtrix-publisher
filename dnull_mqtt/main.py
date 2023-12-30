@@ -14,14 +14,13 @@ def run():
 
     log.info("DNULL MQTT started...")
     log.debug("debug enabled")
-    pairs = ["BTCUSDT", "ETHUSDT"]
     app_binance = AppBinance(config)
     # app_budget = AppBudget(config)
     # app_nutrition = AppNutrition(config)
     app_notion = AppNotion(config)
 
     while True:
-        app_binance.run(pairs)
+        app_binance.run()
         # app_budget.run()
         app_notion.run()
 
