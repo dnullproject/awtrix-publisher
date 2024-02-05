@@ -23,3 +23,20 @@ class Config:
         # Notion
         self.notion_database_id = environ.get("NOTION_PAGE")
         self.notion_token = environ.get("NOTION_TOKEN")
+        self.notion_todo_statuses = ["Backlog", "Ready", "In progress"]
+        self.notion_database_filter = {
+            "and": [
+                {
+                    "property": "Time",
+                    "date": {
+                        "this_week": {},
+                    },
+                },
+                {
+                    "property": "Name",
+                    "rich_text": {
+                        "does_not_contain": "Journal: ",
+                    },
+                },
+            ],
+        }
