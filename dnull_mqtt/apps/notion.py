@@ -27,38 +27,7 @@ class AppNotion(App):
         database = self.notion.databases.query(
             **{
                 "database_id": self.config.notion_database_id,
-                "filter": {
-                    # "and": [
-                    # {
-                    "property": "Time",
-                    "date": {
-                        "this_week": {},
-                    },
-                    # },
-                    # {
-                    #     "or": [
-                    #         {
-                    #             "property": "Status",
-                    #             "status": {
-                    #                 "equals": "Backlog",
-                    #             },
-                    #         },
-                    #         {
-                    #             "property": "Status",
-                    #             "status": {
-                    #                 "equals": "Soon",
-                    #             },
-                    #         },
-                    #         {
-                    #             "property": "Status",
-                    #             "status": {
-                    #                 "equals": "In progress",
-                    #             },
-                    #         }
-                    #     ]
-                    # },
-                    # ],
-                },
+                "filter": self.config.notion_database_filter,
                 "sorts": [{"property": "Time", "direction": "ascending"}],
             }
         )
@@ -114,7 +83,7 @@ class AppNotion(App):
             if all_tasks_no == 0:
                 message = "--Middle grey::No tasks--"
             else:
-                todo_statuses = ["Backlog", "Soon", "In progress"]
+                todo_statuses = self.config.notion_todo_statuses
                 todo = list()
                 for task in tasks:
                     if task["status"] in todo_statuses:
@@ -128,4 +97,5 @@ class AppNotion(App):
 
             self._set_icon(todo_tasks_no, all_tasks_no)
             self._set_scroll_speed(task_names)
-            self.mqtt.publish(self.awtrix.message(message))
+            log.info(self.awtrix.message(message))
+            # self.mqtt.publish(self.awtrix.message(message))
