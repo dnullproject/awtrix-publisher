@@ -98,4 +98,4 @@ class AppNotion(App):
             self._set_icon(todo_tasks_no, all_tasks_no)
             self._set_scroll_speed(task_names)
             log.info(self.awtrix.message(message))
-            # self.mqtt.publish(self.awtrix.message(message))
+            self.mqtt.publish(self.awtrix.message(message))
