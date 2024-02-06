@@ -17,13 +17,18 @@ class Config:
         self.mqtt_username = environ.get("MQTT_USER")
         self.mqtt_password = environ.get("MQTT_PASSWORD")
         self.mtqq_prefix = environ.get("MQTT_PREFIX", "awtrix/custom")
+
         # FatSecret
         self.fatsecret_client_id = environ.get("FATSECRET_KEY")
         self.fatsecret_secret_key = environ.get("FATSECRET_SECRET")
+
         # Notion
         self.notion_database_id = environ.get("NOTION_PAGE")
         self.notion_token = environ.get("NOTION_TOKEN")
-        self.notion_todo_statuses = ["Backlog", "Ready", "In progress"]
+        self.notion_todo_statuses = environ.get(
+            "NOTION_TODO_STATUSES", "Backlog,Ready,In progress"
+        )
+        self.notion_delete_prefixes = environ.get("NOTION_DELETE_PREFIXES", "")
         self.notion_database_filter = {
             "and": [
                 {

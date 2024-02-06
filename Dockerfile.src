@@ -13,4 +13,4 @@ RUN poetry install --no-root
 
 COPY ./ /app/
 
-CMD ["python", "dnull_mqtt"]
+CMD ["poetry", "run", "python", "dnull_mqtt"]
