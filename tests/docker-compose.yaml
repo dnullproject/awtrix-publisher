@@ -12,7 +12,7 @@ services:
   awtrix:
     build:
       context: ../
-      dockerfile: Dockerfile.dev
+      dockerfile: Dockerfile.src
     restart: "no"
     depends_on:
       - mosquitto
@@ -32,3 +32,7 @@ services:
       FATSECRET_SECRET: 
       NOTION_PAGE: 
       NOTION_TOKEN: 
+    command:
+      - poetry
+      - run
+      - pytest
