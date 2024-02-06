@@ -41,15 +41,23 @@ class AppNotion(App):
             log.info("No TODOs")
         else:
             for item in database["results"]:
-                name = item["properties"]["Name"]["title"][0]["plain_text"]
-                status = item["properties"]["Status"]["status"]["name"]
-                time = datetime.fromisoformat(
-                    item["properties"]["Time"]["date"]["start"]
-                ).date()
+                try:
+                    name = item["properties"]["Name"]["title"][0]["plain_text"]
+                    status = item["properties"]["Status"]["status"]["name"]
+                    time = datetime.fromisoformat(
+                        item["properties"]["Time"]["date"]["start"]
+                    ).date()
 
-                if time == today:
-                    todays_todo.append({"name": name, "time": time, "status": status})
+                    if time == today:
+                        todays_todo.append(
+                            {"name": name, "time": time, "status": status}
+                        )
+                except KeyError as e:
+                    log.error(f"Error parsing Notion response: {e}")
+                    log.error(item)
+                    continue
 
+        log.info(todays_todo)
         return todays_todo
 
     def _set_scroll_speed(self, text: str):
@@ -69,6 +77,29 @@ class AppNotion(App):
             icon_no = str(todo_tasks_no) + str(all_tasks_no)
             self.awtrix.icon(icon_no)
 
+    def _format_tasks(self, tasks):
+        task_names = str()
+        todo_tasks_no = 0
+        all_tasks_no = len(tasks)
+        if all_tasks_no == 0:
+            message = "--Middle grey::No tasks--"
+        else:
+            todo_statuses = self.config.notion_todo_statuses
+            todo = list()
+            for task in tasks:
+                if task["status"] in todo_statuses:
+                    todo.append(task["name"])
+            todo_tasks_no = len(todo)
+            if todo_tasks_no == 0:
+                message = f"--Green::{all_tasks_no} completed--"
+            else:
+                task_names = ", ".join(todo)
+                message = f"--White::{task_names}--"
+
+        self._set_icon(todo_tasks_no, all_tasks_no)
+        self._set_scroll_speed(task_names)
+        return self.awtrix.message(message)
+
     def run(self):
         try:
             tasks = self._get_todays_todo()
@@ -77,25 +108,17 @@ class AppNotion(App):
             self.awtrix.icon("error")
             self.mqtt.publish(self.awtrix.message("--Red::connection error--"))
         else:
-            task_names = str()
-            todo_tasks_no = 0
-            all_tasks_no = len(tasks)
-            if all_tasks_no == 0:
-                message = "--Middle grey::No tasks--"
-            else:
-                todo_statuses = self.config.notion_todo_statuses
-                todo = list()
-                for task in tasks:
-                    if task["status"] in todo_statuses:
-                        todo.append(task["name"])
-                todo_tasks_no = len(todo)
-                if todo_tasks_no == 0:
-                    message = f"--Green::{all_tasks_no} completed--"
-                else:
-                    task_names = ", ".join(todo)
-                    message = f"--White::{task_names}--"
+            self.mqtt.publish(self._format_tasks(tasks))
 
-            self._set_icon(todo_tasks_no, all_tasks_no)
-            self._set_scroll_speed(task_names)
-            log.info(self.awtrix.message(message))
-            self.mqtt.publish(self.awtrix.message(message))
+
+class TestAppNotion(AppNotion):
+    def __init__(self, Config: Config) -> None:
+        super().__init__(Config)
+        self.name = "test_notion"
+        self.awtrix.settings["textCase"] = 1
+        self.awtrix.settings["duration"] = 0
+        self.awtrix.settings["icon"] = self.awtrix.icons.get(self.name)
+
+    def test(self, tasks):
+        print(self._format_tasks(tasks))
+        return str(self._format_tasks(tasks))
