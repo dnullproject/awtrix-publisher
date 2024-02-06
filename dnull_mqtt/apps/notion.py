@@ -41,14 +41,19 @@ class AppNotion(App):
             log.info("No TODOs")
         else:
             for item in database["results"]:
-                name = item["properties"]["Name"]["title"][0]["plain_text"]
-                status = item["properties"]["Status"]["status"]["name"]
-                time = datetime.fromisoformat(
-                    item["properties"]["Time"]["date"]["start"]
-                ).date()
+                try:
+                    name = item["properties"]["Name"]["title"][0]["plain_text"]
+                    status = item["properties"]["Status"]["status"]["name"]
+                    time = datetime.fromisoformat(
+                        item["properties"]["Time"]["date"]["start"]
+                    ).date()
 
-                if time == today:
-                    todays_todo.append({"name": name, "time": time, "status": status})
+                    if time == today:
+                        todays_todo.append({"name": name, "time": time, "status": status})
+                except KeyError as e:
+                    log.error(f"Error parsing Notion response: {e}")
+                    log.error(item)
+                    continue
 
         return todays_todo
 
