@@ -84,10 +84,14 @@ class AppNotion(App):
         if all_tasks_no == 0:
             message = "--Middle grey::No tasks--"
         else:
-            todo_statuses = self.config.notion_todo_statuses
+            todo_statuses = self.config.notion_todo_statuses.split(",")
             todo = list()
             for task in tasks:
                 if task["status"] in todo_statuses:
+
+                    if self.config.notion_delete_prefixes:
+                        for prefix in self.config.notion_delete_prefixes.split(','):
+                            task["name"] = task["name"].replace(f"{prefix} ", "")
                     todo.append(task["name"])
             todo_tasks_no = len(todo)
             if todo_tasks_no == 0:

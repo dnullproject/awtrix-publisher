@@ -9,8 +9,8 @@ RUN pip install poetry
 WORKDIR /app/
 COPY poetry.lock pyproject.toml /app/
 
-RUN poetry install --no-root --only main
+RUN poetry install --no-root
 
 COPY ./ /app/
 
-CMD ["python", "dnull_mqtt"]
+CMD ["poetry", "run", "python", "dnull_mqtt"]
