@@ -24,4 +24,4 @@ app_notion = TestAppNotion(config)
 
 
 def test_notion():
-    assert app_notion.test(tasks=mock_tasks) == mock_tasks
+    assert mock_result == app_notion.test(tasks=mock_tasks)
