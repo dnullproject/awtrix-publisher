@@ -20,4 +20,3 @@ View config to get list of icons you need to download.
 # TODO
 - [] nutrition
 - [] ActualBudget - spend per day
-
