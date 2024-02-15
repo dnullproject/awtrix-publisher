@@ -57,7 +57,6 @@ class AppNotion(App):
                     log.error(item)
                     continue
 
-        log.info(todays_todo)
         return todays_todo
 
     def _set_scroll_speed(self, text: str):

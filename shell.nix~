@@ -1,0 +1,32 @@
+{ pkgs ? import <nixpkgs> {} }:
+
+let
+  python = pkgs.python310;
+  nodejs = pkgs.nodejs-18_x;
+  gcc = pkgs.gcc13;  # Add this line to include GCC 12.1
+in
+pkgs.mkShell {
+  buildInputs = [
+    pkgs.git
+    pkgs.curl
+    pkgs.lunarvim
+    pkgs.clang-tools
+    pkgs.fzf
+    pkgs.ripgrep
+    pkgs.tree-sitter
+    # require 'nvim-treesitter.install'.compilers = { 'clang++'}
+    # pkgs.clang_12
+    # pkgs.clangStdenv
+    # pkgs.clangMultiStdenv
+    python
+    nodejs
+    gcc
+  ];
+
+  shellHook = ''
+    echo "{
+      \"venvPath\": \"${python}/bin\",
+      \"include\": [\".\"]
+    }" > pyrightconfig.json
+  '';
+}
